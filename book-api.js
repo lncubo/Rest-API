@@ -14,14 +14,20 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post('/book', (req, res) => {
-    const book = req.body;
+app.post('/book/:isbn', (req, res) => {
+    // Reading isbn from the URL
+    const isbn = req.params.isbn;
+    const newBook = req.body;
 
-    // Output the book to the console for debugging
-    console.log(book);
-    books.push(book);
+    // Remove item from the books array
+    for (let i = 0; i < books.length; i++) {
+        let book = books[i]
+        if (book.isbn === isbn) {
+            books[i] = newBook;
+        }
+    }
 
-    res.send('Book is added to the database');
+    res.send('Book is edited');
 });
 app.get('/book/:isbn', (req, res) => {
     // Reading isbn from the URL
